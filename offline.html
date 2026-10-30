@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>You're Offline – BirdLogApp</title>
+  <style>
+    :root {
+      --clr-primary: #1a6b3a;
+      --bg: #f0f4f0;
+      --txt: #1a1f1a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--txt);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 2rem;
+    }
+    .icon { font-size: 5rem; margin-bottom: 1.5rem; animation: float 3s ease-in-out infinite; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--clr-primary);
+      margin-bottom: 0.75rem;
+    }
+    p {
+      font-size: 1.05rem;
+      color: #4a5e4a;
+      max-width: 400px;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    .hint {
+      font-size: 0.85rem;
+      color: #7a8f7a;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      display: inline-block;
+      background: var(--clr-primary);
+      color: white;
+      padding: 12px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover { background: #2a8a4e; }
+    .feature-list {
+      margin-top: 2rem;
+      text-align: left;
+      background: white;
+      border-radius: 12px;
+      padding: 1.2rem 1.5rem;
+      border: 1px solid #d0ddd0;
+      max-width: 360px;
+      width: 100%;
+    }
+    .feature-list p { margin: 0 0 0.5rem; font-size: 0.9rem; font-weight: 600; color: var(--clr-primary); }
+    .feature-list ul { list-style: none; }
+    .feature-list li { font-size: 0.85rem; color: #4a5e4a; margin: 4px 0; }
+    .feature-list li::before { content: "✓ "; color: var(--clr-primary); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="icon">🦅</div>
+  <h1>You're Offline</h1>
+  <p>
+    No internet connection detected. BirdLogApp's core features are still available using cached data.
+  </p>
+  <p class="hint">Connect to the internet to sync and upload photos.</p>
+  <button class="btn" onclick="window.location.reload()">🔄 Try Again</button>
+
+  <div class="feature-list">
+    <p>Still available offline:</p>
+    <ul>
+      <li>View saved bird sightings</li>
+      <li>Add & edit observations</li>
+      <li>Search your records</li>
+      <li>View your photo feed</li>
+      <li>Use the camera &amp; capture photos</li>
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.pyc
+node_modules/
+
+.env
+users.db
+login_design_reference.png

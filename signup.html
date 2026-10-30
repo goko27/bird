@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BirdLog — Sign Up</title>
+<link rel="stylesheet" href="/login.css">
+</head>
+<body data-auth-page="signup" class="signup-page">
+<div class="auth-page">
+  <main class="auth-card-wrap">
+    <div class="auth-card signup-card">
+      <div class="auth-top">
+        <div><span class="eyebrow purple">CREATE ACCOUNT</span><h2>Hello!</h2><p>Create your username and password to get started.</p></div>
+        <img class="auth-bird" src="/login_kingfisher.png" alt="Colorful kingfisher illustration">
+      </div>
+      <form id="signupForm" class="auth-form" novalidate>
+        <label class="field"><span>Full Name</span><div class="field-box"><input type="text" id="signupFullName" autocomplete="name" required><span class="field-icon">👤</span></div></label>
+        <label class="field"><span>Create Username</span><div class="field-box"><input type="text" id="signupUsername" autocomplete="username" required minlength="3"><span class="field-icon">@</span></div></label>
+        <label class="field"><span>Email</span><div class="field-box"><input type="email" id="signupEmail" autocomplete="email" required><span class="field-icon">✉</span></div></label>
+        <label class="field"><span>Create Password</span><div class="field-box"><input type="password" id="signupPassword" autocomplete="new-password" required minlength="6"><button type="button" class="eye-btn" data-target="signupPassword" aria-label="Show password">◉</button></div></label>
+        <label class="field"><span>Confirm Password</span><div class="field-box"><input type="password" id="signupConfirm" autocomplete="new-password" required minlength="6"><button type="button" class="eye-btn" data-target="signupConfirm" aria-label="Show password">◉</button></div></label>
+        <button class="primary-btn" type="submit">Sign Up</button>
+        <p class="switch-line">Already have an account? <a href="/login">Sign In</a></p>
+        <div id="authMessage" class="auth-message" role="alert"></div>
+      </form>
+    </div>
+  </main>
+</div>
+<script src="/api-config.js"></script>
+<script src="/auth.js"></script>
+</body>
+</html>

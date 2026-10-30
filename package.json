@@ -1,0 +1,30 @@
+{
+  "name": "birdlogapp",
+  "version": "1.0.0",
+  "description": "BirdLogApp – Bird Watching Observation & Management Application",
+  "main": "electron/main.js",
+  "scripts": {
+    "start":       "electron electron/main.js",
+    "dev":         "NODE_ENV=development electron electron/main.js",
+    "flask":       "python app.py",
+    "cap:init":    "cap init BirdLogApp com.birdlog.app",
+    "cap:add:android": "cap add android",
+    "cap:add:ios":     "cap add ios",
+    "cap:sync":    "cap sync",
+    "cap:open:android": "cap open android",
+    "cap:open:ios":     "cap open ios"
+  },
+  "keywords": ["bird", "watching", "nature", "pwa", "electron"],
+  "author": "BirdLogApp",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0"
+  },
+  "dependencies": {
+    "@capacitor/core": "^5.0.0",
+    "@capacitor/cli":  "^5.0.0",
+    "@capacitor/camera":     "^5.0.0",
+    "@capacitor/filesystem": "^5.0.0",
+    "@capacitor/share":      "^5.0.0"
+  }
+}

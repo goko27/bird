@@ -1,0 +1,27 @@
+{
+  "appId": "com.birdlog.app",
+  "appName": "BirdLogApp",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "allowNavigation": ["localhost:5000"]
+  },
+  "android": {
+    "buildOptions": {
+      "keystorePath":  null,
+      "keystoreAlias": null
+    }
+  },
+  "ios": {
+    "contentInset": "automatic"
+  },
+  "plugins": {
+    "Camera": {
+      "permissions": ["camera", "photos"]
+    },
+    "Filesystem": {
+      "directory": "Documents"
+    }
+  }
+}

@@ -1,0 +1,5 @@
+/*
+  Allow the browser to request the camera from the BirdLog page itself.
+  Camera permission is still controlled by the browser/device.
+*/
+  Permissions-Policy: camera=(self)

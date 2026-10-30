@@ -1,0 +1,16 @@
+BirdLog normal-user community permissions
+
+Every authenticated normal user can:
+- Like/unlike a community post
+- Open and post comments
+- Share a post link (Web Share API or copy-link fallback)
+- Report a post with a reason
+
+These API actions require the normal-user session. Admin moderation remains separate and does not grant ordinary users admin rights.
+
+Endpoints:
+POST /api/community/posts/<post_id>/like
+GET/POST /api/community/posts/<post_id>/comments
+POST /api/community/posts/<post_id>/report
+
+Share is intentionally client-side; no privileged database permission is required.

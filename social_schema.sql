@@ -1,0 +1,6 @@
+-- BirdLog Community tables (created automatically inside users.db by app.py)
+-- community_posts stores a snapshot of each bird observation as a social post.
+-- community_likes, community_comments, community_reports, community_notifications,
+-- and community_messages store public feed interactions and direct messages.
+-- Follow/save tables may exist for compatibility with older local databases but
+-- are no longer shown in the user interface.

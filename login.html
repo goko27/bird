@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BirdLog — Welcome Back</title>
+<link rel="stylesheet" href="/login.css">
+</head>
+<body data-auth-page="login">
+<div class="auth-page">
+  <aside class="auth-photo" aria-label="Bird photograph">
+    <img src="/login_bird_panel.jpg" alt="Blue bird in nature">
+    <div class="photo-shade"></div>
+    <div class="photo-copy"><span class="eyebrow">BIRDLOG</span><h1>Observe.<br>Record.<br>Discover.</h1><p>A personal home for every bird you spot.</p><div class="explore-pill">Explore the bird world</div></div>
+  </aside>
+  <main class="auth-card-wrap">
+    <div class="auth-card">
+      <div class="auth-top">
+        <div><span class="eyebrow purple">WELCOME BACK</span><h2>Hello again!</h2><p>Sign in to continue your bird watching journey.</p></div>
+        <img class="auth-bird" src="/login_kingfisher.png" alt="Colorful kingfisher illustration">
+      </div>
+      <form id="loginForm" class="auth-form" novalidate autocomplete="off">
+        <label class="field"><span>Email</span><div class="field-box"><input type="email" id="loginEmail" name="birdlog-user-email" autocomplete="off" autocapitalize="none" spellcheck="false" required><span class="field-icon">✉</span></div></label>
+        <label class="field"><span>Password</span><div class="field-box"><input type="password" id="loginPassword" name="birdlog-user-password" autocomplete="new-password" required><button type="button" class="eye-btn" data-target="loginPassword" aria-label="Show password">◉</button></div></label>
+        <button class="primary-btn" type="submit">Sign In</button>
+        <p class="switch-line">First time here? Create your own account by entering any valid email and password, or <a href="/signup">Sign Up</a></p>
+        <div id="authMessage" class="auth-message" role="alert"></div>
+      </form>
+      <div class="login-sparrow"><img src="/login_center_sparrow.png" alt="Sparrow illustration"></div>
+      <div class="account-note"><span>Already using another account?</span><button type="button" id="switchLoginBtn">Switch account</button></div>
+    </div>
+  </main>
+</div>
+<script src="/api-config.js"></script>
+<script src="/auth.js"></script>
+</body>
+</html>

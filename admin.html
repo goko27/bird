@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#5b2a9e">
+  <title>BirdLog | Admin Panel</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="adminLogin" class="admin-shell">
+  <div class="admin-login-card">
+    <div class="admin-logo">🛡️</div>
+    <h1>BirdLog Admin</h1>
+    <p>Sign in to manage observations, species, database and application data.</p>
+    <form id="loginForm">
+      <label>Username<input id="loginUsername" class="admin-input" autocomplete="username" required></label>
+      <label>Password<input id="loginPassword" class="admin-input" type="password" autocomplete="current-password" required></label>
+      <button class="admin-btn primary" type="submit">Sign in</button>
+      <div id="loginError" class="admin-error"></div>
+    </form>
+    <div class="admin-route-note">Admin access is separate from normal user login.<br><small>Administrator URL: /admin</small></div>
+    <a class="back-link" href="/">← Back to BirdLog</a>
+  </div>
+</div>
+
+<div id="adminApp" class="admin-shell" style="display:none">
+  <header class="admin-header">
+    <div><span class="eyebrow">BIRDLOG</span><h1>Admin Control Center</h1><p>Full management access</p></div>
+    <div class="header-actions"><span class="admin-user" id="adminUser">admin</span><button id="logoutBtn" class="admin-btn ghost">Logout</button></div>
+  </header>
+
+  <main class="admin-main">
+    <section class="admin-stats">
+      <div class="admin-stat"><span>📝</span><strong id="statSightings">0</strong><small>Observations</small></div>
+      <div class="admin-stat"><span>🦜</span><strong id="statSpecies">0</strong><small>Species</small></div>
+      <div class="admin-stat"><span>📍</span><strong id="statLocations">0</strong><small>Locations</small></div>
+      <div class="admin-stat"><span>☁️</span><strong id="statDb">—</strong><small>Database</small></div>
+    </section>
+
+    <section class="admin-card wide admin-power-banner">
+      <div><h2>🛡️ Administrator Powers</h2><p>Manage users, community posts, reports, observations, species and database settings from this separate admin area.</p></div>
+      <div class="power-chips"><span>Users</span><span>Posts</span><span>Reports</span><span>Species</span><span>Observations</span><span>Database</span></div>
+    </section>
+
+    <section class="admin-grid">
+      <div class="admin-card wide">
+        <div class="card-head"><div><h2>Observations</h2><p>View, edit and delete any sighting.</p></div><button id="refreshObsBtn" class="admin-btn secondary">↻ Refresh</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Bird</th><th>Species</th><th>Date</th><th>Location</th><th>Weather</th><th>Actions</th></tr></thead><tbody id="obsTable"></tbody></table></div>
+      </div>
+
+      <div class="admin-card">
+        <div class="card-head"><div><h2>Species</h2><p>Add or remove species categories.</p></div></div>
+        <form id="speciesForm" class="inline-form"><input id="speciesName" class="admin-input" placeholder="Species name" required><input id="speciesCategory" class="admin-input" placeholder="Category" value="General"><button class="admin-btn primary" type="submit">Add</button></form>
+        <div id="speciesAdminList" class="admin-list"></div>
+      </div>
+
+      <div class="admin-card">
+        <div class="card-head"><div><h2>Database Control</h2><p>Manage storage and synchronization.</p></div></div>
+        <div id="dbStatus" class="db-panel">Loading database status…</div>
+        <div class="button-stack">
+          <button id="useSqlBtn" class="admin-btn secondary">Use SQLite</button>
+          <button id="useSupabaseBtn" class="admin-btn secondary">Use Supabase</button>
+          <button id="syncBtn" class="admin-btn primary">↔ Sync SQLite ↔ Supabase</button>
+          <button id="initBtn" class="admin-btn secondary">☁ Initialize Supabase</button>
+          <a href="/api/export/csv" class="admin-btn secondary center">📥 Export CSV</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-grid">
+      <div class="admin-card wide">
+        <div class="card-head"><div><h2>👥 User Management</h2><p>Block, enable or permanently delete normal-user accounts.</p></div><button id="refreshUsersBtn" class="admin-btn secondary">↻ Refresh</button></div>
+        <div class="table-wrap"><table><thead><tr><th>User</th><th>Email</th><th>Posts</th><th>Status</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div>
+      </div>
+
+      <div class="admin-card wide">
+        <div class="card-head"><div><h2>🚩 Reported Posts</h2><p>Review reports submitted by users and remove offending posts.</p></div><button id="refreshReportsBtn" class="admin-btn secondary">↻ Refresh</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Post</th><th>Reporter</th><th>Reason</th><th>Reported</th><th>Actions</th></tr></thead><tbody id="reportsTable"></tbody></table></div>
+      </div>
+
+      <div class="admin-card wide">
+        <div class="card-head"><div><h2>📰 Community Post Moderation</h2><p>Hide/restore or permanently delete any community post.</p></div><button id="refreshPostsBtn" class="admin-btn secondary">↻ Refresh</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Post</th><th>Species</th><th>Reports</th><th>Status</th><th>Actions</th></tr></thead><tbody id="postsTable"></tbody></table></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="editModal" class="admin-modal" style="display:none">
+  <div class="edit-card">
+    <button id="closeEdit" class="modal-x">×</button>
+    <h2>Edit Observation</h2>
+    <form id="editForm" class="edit-grid">
+      <input type="hidden" id="editId">
+      <label>Bird name<input id="editBird" class="admin-input" required></label>
+      <label>Species<input id="editSpecies" class="admin-input" required></label>
+      <label>Date<input id="editDate" type="date" class="admin-input" required></label>
+      <label>Weather<input id="editWeather" class="admin-input"></label>
+      <label>State<input id="editState" class="admin-input"></label>
+      <label>District<input id="editDistrict" class="admin-input"></label>
+      <label class="full">Location<input id="editLocation" class="admin-input"></label>
+      <label class="full">Notes<textarea id="editNotes" class="admin-input" rows="4"></textarea></label>
+      <button class="admin-btn primary full" type="submit">Save Changes</button>
+    </form>
+  </div>
+</div>
+<div id="adminToast"></div>
+<script src="api-config.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

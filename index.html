@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#5b2a9e">
+  <title>BirdLog | Bird Watching Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="splash"><div class="logo">🦅</div><span>BIRDLOG</span></div>
+
+<div class="app">
+  <!-- HOME / BIRD COMMUNITY -->
+  <section id="tab-dashboard" class="tab-content">
+    <div class="topbar">
+      <button class="db-status-badge" id="dbStatusBadge" title="Database settings">
+        <span class="db-dot green" id="dbStatusDot"></span><span id="dbStatusText">DB: SQL (SQLite)</span>
+      </button>
+      <div style="display:flex;gap:8px;align-items:center"><button class="account-top-btn" id="accountBtn">👤 <span id="currentUserName">Account</span></button><button class="theme-toggle" id="themeToggleBtn">🌙 Theme</button></div>
+    </div>
+
+    <div class="community-heading">
+      <div>
+        <span class="community-eyebrow">BIRD COMMUNITY</span>
+        <h1 class="greet" style="margin-top:5px">Discover &amp; share bird sightings.</h1>
+        <p class="greet-sub">Explore public bird posts and connect with bird watchers.</p>
+      </div>
+      <button class="community-notify-btn" id="notificationsBtn" title="Notifications">🔔<span id="notificationDot" class="notification-dot" style="display:none"></span></button>
+    </div>
+
+    <div class="search-container community-search">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search birds, users, hashtags">
+      <span class="search-icon">🔍</span>
+    </div>
+
+
+    <div class="feed-toolbar">
+      <h2>Bird Community</h2>
+      <button class="feed-refresh-btn" id="refreshFeedBtn">↻ Refresh</button>
+    </div>
+    <div id="communityFeed" class="community-feed"></div>
+  </section>
+
+  <!-- MY SIGHTINGS -->
+  <section id="tab-records" class="tab-content" style="display:none">
+    <div class="page-top">My Sightings</div>
+    <div class="section-header">
+      <h2 class="section-title">My Sightings</h2>
+      <span class="section-tag" id="recordsCountTag">0 Sightings</span>
+    </div>
+    <button class="btn-primary" id="addMySightingBtn" type="button" style="margin-bottom:16px">＋ Add Sighting</button>
+    <p class="account-muted" style="margin:-4px 0 14px">Only your own bird observations appear here.</p>
+    <div class="list" id="recordsTableBody"></div>
+  </section>
+
+  <!-- ADD SIGHTING (login-style purple header) -->
+  <section id="tab-add" class="tab-content" style="display:none">
+    <div class="hero-purple"><span class="orb"></span><h1>NEW SIGHTING</h1><p>Enter the details of what you spotted in the field.</p></div>
+    <div class="form-card">
+      <form id="obsForm">
+        <div class="form-group"><label class="form-label">Bird name *</label><input type="text" id="birdNameInput" class="form-control" placeholder="e.g. Indian Peafowl" required autocomplete="off" oninput="window.birdLogAutoSpecies && window.birdLogAutoSpecies(this.value)" onkeyup="window.birdLogAutoSpecies && window.birdLogAutoSpecies(this.value)"></div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Species / type *</label><input type="text" id="speciesSelect" class="form-control species-auto-field" placeholder="Species will appear automatically" readonly required aria-readonly="true" tabindex="-1"><small class="muted species-auto-help">Automatically selected from the bird name.</small></div>
+          <div class="form-group"><label class="form-label">Date *</label><input type="date" id="obsDateInput" class="form-control" required></div>
+        </div>
+        <div class="form-group"><label class="form-label">Weather *</label>
+          <select id="weatherSelect" class="form-control" required>
+            <option value="Clear">☀️ Clear / Sunny</option><option value="Partly Cloudy">⛅ Partly Cloudy</option><option value="Overcast">☁️ Overcast</option>
+            <option value="Rainy">🌧️ Rainy</option><option value="Foggy">🌫️ Foggy</option><option value="Windy">💨 Windy</option><option value="Stormy">⛈️ Stormy</option>
+          </select></div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">State / Union Territory</label><select id="stateInput" class="form-control"><option value="">Select state / UT</option></select></div>
+          <div class="form-group"><label class="form-label">District</label><select id="districtInput" class="form-control" disabled><option value="">Select district</option></select></div>
+        </div>
+        <div class="form-group"><label class="form-label">Location / landmark</label><input type="text" id="locationInput" class="form-control" placeholder="Siruvani River Bank"></div>
+        <div class="form-group"><label class="form-label">Field notes</label><textarea id="notesInput" class="form-control" rows="3" placeholder="Plumage, call, behaviour, habitat…"></textarea></div>
+
+        <div class="form-group">
+          <label class="form-label">Photo</label>
+          <div class="cam-box photo-upload-box camera-ready" id="photoUploadBox" tabindex="0" role="button" aria-label="Open live camera">
+            <video id="cameraVideo" autoplay playsinline muted style="display:none" aria-label="Live camera preview"></video>
+            <img id="photoPreviewImg" src="" alt="Captured bird photo" style="display:none">
+            <canvas id="cameraCanvas" style="display:none"></canvas>
+            <input type="hidden" id="photoBase64">
+            <div id="photoUploadPlaceholder">
+              <p>📷 Tap to open the live camera</p>
+              <button type="button" class="btn-primary btn-sm btn-soft" id="openCameraBtn" style="margin:0 auto">📷 Open Live Camera</button>
+              <small class="muted" style="display:block;margin-top:8px;text-align:center">A live camera photo is required before saving.</small>
+            </div>
+            <div id="cameraControls" style="display:none">
+              <button type="button" class="btn-primary btn-sm btn-soft" id="capturePhotoBtn">📸 Capture Photo</button>
+              <button type="button" class="btn-primary btn-sm btn-soft" id="stopCameraBtn">✕ Close Camera</button>
+            </div>
+            <div id="capturedPhotoControls" style="display:none">
+              <button type="button" class="btn-primary btn-sm btn-soft" id="retakePhotoBtn">🔄 Retake</button>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary" id="saveObsBtn" disabled>Save Sighting</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- SPECIES -->
+  <section id="tab-species" class="tab-content" style="display:none">
+    <div class="page-top">Species</div>
+    <div class="card">
+      <h3>Bird Species Information</h3>
+      <p class="muted">Browse the bird species catalog maintained by BirdLog administrators.</p>
+    </div>
+    <div class="row-head"><h2>Bird Species</h2></div>
+    <div class="list" id="speciesListContainer"></div>
+  </section>
+
+  <!-- MY ACCOUNT -->
+  <section id="tab-account" class="tab-content" style="display:none">
+    <div class="page-top">My Account Details</div>
+    <div class="account-card account-page-card">
+      <div class="account-avatar" id="accountPageAvatar">👤</div>
+      <h2 id="accountFullName">Account</h2>
+      <p id="accountEmail" class="account-muted"></p>
+      <p id="accountUsername" class="account-handle"></p>
+      <button class="btn-primary" id="switchAccountBtn" type="button">🔄 Switch Account</button>
+      <button class="btn-primary btn-soft" id="logoutAccountBtn" type="button" style="margin-top:10px">🚪 Logout</button>
+    </div>
+  </section>
+</div>
+
+<!-- bottom tab bar -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-tab="dashboard"><span class="ni">🏠</span>Home</button>
+  <button class="nav-btn" data-tab="records"><span class="ni">📋</span>My Sightings</button>
+  <button class="nav-btn nav-add" data-tab="add" aria-label="Add Sighting" title="Add Sighting"><span class="ni">＋</span><span class="add-label">Add</span></button>
+  <button class="nav-btn" data-tab="species"><span class="ni">🦜</span>Species</button>
+  <button class="nav-btn" data-tab="account"><span class="ni">👤</span>My Account</button>
+</nav>
+
+<!-- detail sheet -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal-card">
+    <button class="modal-close" id="closeDetailModalBtn">&times;</button>
+    <img id="detailModalPhoto" src="" alt="Bird photo" style="width:100%;height:220px;object-fit:cover;border-radius:20px;margin-bottom:14px">
+    <span class="section-tag" id="detailModalSpecies">Species</span>
+    <h2 id="detailModalBirdName" style="margin:8px 0">Bird</h2>
+    <div style="display:grid;gap:6px;font-size:.92rem;margin-bottom:12px">
+      <div>📅 <span id="detailModalDate"></span></div>
+      <div>🌤️ <span class="weather-badge" id="detailModalWeather"></span></div>
+      <div>📍 <span id="detailModalLocation"></span></div>
+    </div>
+    <h4>Field notes</h4><p class="note-box" id="detailModalNotes"></p>
+  </div>
+</div>
+
+<!-- database sheet -->
+<div class="modal-overlay" id="dbModal">
+  <div class="modal-card">
+    <button class="modal-close" id="closeDbModalBtn">&times;</button>
+    <h2>Settings</h2><p style="color:var(--text-muted);font-size:.88rem">Storage engine &amp; cloud sync</p>
+    <div class="card" style="margin-top:14px;font-size:.9rem">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Active engine</span><span class="weather-badge" id="dbModalActiveEngine">SQL (SQLite)</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>SQLite</span><strong id="dbModalSqlHealth" style="color:#16a34a">Healthy</strong></div>
+      <div style="display:flex;justify-content:space-between;gap:12px"><span>Supabase</span><strong id="dbModalSupabaseHealth" style="text-align:right;color:var(--text-muted)">Standby</strong></div>
+    </div>
+    <h4>Active storage</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+      <button class="btn-primary btn-soft" id="selectSqlEngineBtn">🐘 SQLite</button>
+      <button class="btn-primary btn-soft" id="selectSupabaseEngineBtn">☁️ Supabase</button>
+    </div>
+    <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:12px">Credentials live in the server-side <code>.env</code> file, never in this page.</p>
+    <button class="btn-primary" id="syncDbBtn">🔄 Sync SQLite ↔ Supabase</button>
+    <button class="btn-primary btn-soft" id="initSupabaseBtn" style="margin-top:10px">☁️ Initialize Supabase from SQLite</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="socialModal"><div class="modal-card social-modal-card"><button class="modal-close" id="closeSocialModalBtn">&times;</button><div id="socialModalContent"></div></div></div>
+
+<div class="modal-overlay" id="profileModal"><div class="modal-card social-modal-card"><button class="modal-close" id="closeProfileModalBtn">&times;</button><div id="profileModalContent"></div></div></div>
+<div class="modal-overlay" id="messageModal"><div class="modal-card social-modal-card message-modal-card"><button class="modal-close" id="closeMessageModalBtn">&times;</button><div id="messageModalContent"></div></div></div>
+
+<div class="modal-overlay" id="notificationsModal"><div class="modal-card social-modal-card"><button class="modal-close" id="closeNotificationsModalBtn">&times;</button><div id="notificationsModalContent"></div></div></div>
+
+
+<div id="toastContainer"></div>
+<script src="api-config.js"></script>
+<script src="app.js?v=20261005-sessionfix"></script>
+<script src="user-session.js"></script>
+</body>
+</html>

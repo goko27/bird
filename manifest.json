@@ -1,0 +1,43 @@
+{
+  "name": "BirdLogApp – Bird Watching Journal",
+  "short_name": "BirdLog",
+  "description": "A nature-inspired bird watching observation and management application.",
+  "start_url": "/login",
+  "display": "standalone",
+  "background_color": "#5b2a9e",
+  "theme_color": "#5b2a9e",
+  "orientation": "portrait-primary",
+  "categories": [
+    "nature",
+    "productivity",
+    "lifestyle"
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Add Sighting",
+      "short_name": "Add",
+      "description": "Add a new bird sighting",
+      "url": "/app?action=add",
+      "icons": [
+        {
+          "src": "/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
